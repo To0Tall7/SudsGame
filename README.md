@@ -1,4 +1,9 @@
 # SudsGame
+
+This is our starting point -- save this in case of the need to restart at the beginning of the project development
+
+--------------------------------------------
+
 The repository for the UMN Suds Game Dev team 
 
 
