@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
         gameSceneUIHandler.UIGameOver();//Activate and deactivate the relevant UI when a game over is triggered.
     }
 
-    void UpdateLives(int modifier)
+    public void UpdateLives(int modifier)
     {
         lives += modifier;
         gameSceneUIHandler.UpdateLivesUI();
     }
 
-    void UpdateScore(int modifier)
+    public void UpdateScore(int modifier)
     {
         score += modifier;
         gameSceneUIHandler.UpdateScoreUI();
