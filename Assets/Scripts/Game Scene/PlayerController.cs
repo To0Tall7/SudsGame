@@ -9,12 +9,14 @@ public class PlayerController : MonoBehaviour
     private bool isOnGround;
     private Rigidbody2D playerRb;
     private GameObject hitbox;
+    private GameManager gameManager;
     //private bool isPunching = false;
     private float lastPunchTime = 0;//The last time the player punched, in game time.
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         playerRb = GetComponent<Rigidbody2D>();
         hitbox = transform.GetChild(0).gameObject;//Get the hitbox.
         hitbox.SetActive(false);//Immediately turn it off.
@@ -23,6 +25,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.gameOver)
+        {
+            Destroy(gameObject);
+        }
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             transform.Translate(new Vector2(-1.0f, 0f) * speed * Time.deltaTime);
