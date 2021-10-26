@@ -36,6 +36,10 @@ public class GameManager : MonoBehaviour
     {
         lives += modifier;
         gameSceneUIHandler.UpdateLivesUI();
+        if (lives <= 0)
+        {
+            GameOver();
+        }
     }
 
     public void UpdateScore(int modifier)
