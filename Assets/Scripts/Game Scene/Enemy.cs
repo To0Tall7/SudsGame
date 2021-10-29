@@ -6,7 +6,7 @@ public class Enemy : MonoBehaviour
 {
     private GameManager gameManager;
     private GameObject player;
-    private float speed = 3.0f;
+    private float speed = 2.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +34,12 @@ public class Enemy : MonoBehaviour
 
     void FollowPlayer()//Follows the player (horizontally only).
     {
-        float xDirection = player.transform.position.x - transform.position.x;
-        Vector2 direction = new Vector2(xDirection / Mathf.Abs(xDirection), 0f);//Either (-1,0) or (1,0).
-        transform.Translate(direction*speed*Time.deltaTime);
+        if (player.transform.position.x != transform.position.x)
+        {
+            float xDirection = player.transform.position.x - transform.position.x;
+            Vector2 direction = new Vector2(xDirection / Mathf.Abs(xDirection), 0f);//Either (-1,0) or (1,0).
+            transform.Translate(direction * speed * Time.deltaTime);
+        }
     }
 
     void DamagePlayer()

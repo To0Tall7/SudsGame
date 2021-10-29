@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
 {
     private GameManager gameManager;
     [SerializeField] GameObject genericEnemyPrefab;
-    float spawnRangeX = 12.0f;
+    float spawnRangeX = 23.0f;
     int enemyCount;
     int waveNumber = 0;
 
