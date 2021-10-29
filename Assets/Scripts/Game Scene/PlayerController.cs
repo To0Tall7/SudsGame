@@ -44,15 +44,14 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
         }
-        if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.5)//Punch if press E and it has been at least 0.5 seconds since last punch.
+        if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
         {
             lastPunchTime = Time.time;
             StartCoroutine(PunchingCoroutine());
-            //NOTE: This still does not quite obey the punch delay that we want. The player currently can spam punch. MUST FIX
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground") || (collision.gameObject.CompareTag("Platform") && playerRb.velocity.y == 0))//If player touches the ground, or touches the platform AND IS NOT PASSING THROUGH THE PLATFORM...
         {
@@ -71,7 +70,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator PunchingCoroutine()
     {
         hitbox.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.025f);
         hitbox.SetActive(false);
     }
 }
