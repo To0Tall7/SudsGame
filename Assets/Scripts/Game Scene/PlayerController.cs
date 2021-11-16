@@ -12,12 +12,21 @@ public class PlayerController : MonoBehaviour
     private GameManager gameManager;
     //private bool isPunching = false;
     private float lastPunchTime = 0;//The last time the player punched, in game time.
+    private AudioSource playerAudio;
+    [SerializeField] AudioClip[] jumpSounds;
+    private int jumpSoundsLength;
+    [SerializeField] AudioClip[] punchSounds;
+    private int punchSoundsLength;
+
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         playerRb = GetComponent<Rigidbody2D>();
+        playerAudio = GetComponent<AudioSource>();
+        jumpSoundsLength = jumpSounds.Length;
+        punchSoundsLength = punchSounds.Length;
         hitbox = transform.GetChild(0).gameObject;//Get the hitbox.
         hitbox.SetActive(false);//Immediately turn it off.
     }
@@ -43,6 +52,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
+            PlayJumpSound();
         }
         if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
         {
@@ -69,8 +79,21 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PunchingCoroutine()
     {
+        PlayPunchSound();
         hitbox.SetActive(true);
         yield return new WaitForSeconds(0.025f);
         hitbox.SetActive(false);
+    }
+
+    private void PlayJumpSound()
+    {
+        int jumpSoundIndex = Random.Range(0, jumpSoundsLength);
+        playerAudio.PlayOneShot(jumpSounds[jumpSoundIndex]);
+    }
+
+    private void PlayPunchSound()
+    {
+        int punchSoundIndex = Random.Range(0, punchSoundsLength);
+        playerAudio.PlayOneShot(punchSounds[punchSoundIndex]);
     }
 }

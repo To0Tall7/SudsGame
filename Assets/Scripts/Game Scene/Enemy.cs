@@ -7,12 +7,14 @@ public class Enemy : MonoBehaviour
     private GameManager gameManager;
     private GameObject player;
     private float speed = 2.0f;
+    private AudioSource enemyAudio;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.FindGameObjectWithTag("Player");
+        enemyAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,7 +53,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Hitbox"))
+        if (collision.gameObject.CompareTag("Hitbox"))//If the enemy gets punched...
         {
             Die();
         }
@@ -75,4 +77,6 @@ public class Enemy : MonoBehaviour
     }
 
     #endregion
+
+    
 }
