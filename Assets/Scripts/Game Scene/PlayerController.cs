@@ -17,12 +17,13 @@ public class PlayerController : MonoBehaviour
     private int jumpSoundsLength;
     [SerializeField] AudioClip[] punchSounds;
     private int punchSoundsLength;
-
+    private Animator playerAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerAnimator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<AudioSource>();
         jumpSoundsLength = jumpSounds.Length;
