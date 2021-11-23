@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip[] punchSounds;
     private int punchSoundsLength;
     private Animator playerAnimator;
+    // private bool IsRunning, IsJumping, IsPunching, IsHurt, IsDead, IsLanding = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,23 +43,31 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
+            // playerAnimator.SetBool("isRunning", true);
             transform.Translate(new Vector2(-1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(-1.0f, 0);
+            // playerAnimator.SetBool("isRunning", false);
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
+            playerAnimator.SetBool("isRunning", true);
             transform.Translate(new Vector2(1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(1.0f, 0);
+            playerAnimator.SetBool("isRunning", false);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            playerAnimator.SetBool("isJumping", true);
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
             PlayJumpSound();
+            playerAnimator.SetBool("isJumping", false);
         }
         if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
         {
+            playerAnimator.SetBool("isPunching", true);
             lastPunchTime = Time.time;
             StartCoroutine(PunchingCoroutine());
+            playerAnimator.SetBool("isPunching", false);
         }
     }
 
@@ -66,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") || (collision.gameObject.CompareTag("Platform") && playerRb.velocity.y == 0))//If player touches the ground, or touches the platform AND IS NOT PASSING THROUGH THE PLATFORM...
         {
+            playerAnimator.SetBool("IsLanding", true);
             isOnGround = true;
         }
     }

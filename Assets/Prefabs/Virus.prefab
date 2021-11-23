@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 6063231455492006128}
   - component: {fileID: 6063231455492006131}
   - component: {fileID: 958707160893883980}
+  - component: {fileID: 1403620958757947850}
   m_Layer: 0
-  m_Name: Temporary Enemy
+  m_Name: Virus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,11 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e23dfafb47a07c45a018e6bac47ca22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  punchSounds:
-  - {fileID: 8300000, guid: 0af8180d95ee77548bda103a9efb535c, type: 3}
-  - {fileID: 8300000, guid: ee6f23dea734cb747b8a864dcebf97c6, type: 3}
-  - {fileID: 8300000, guid: 7a16b8a71f02a37478cd187ccd34099d, type: 3}
-  - {fileID: 8300000, guid: 626d6a1e7a9da2f47947a4155a682d36, type: 3}
 --- !u!58 &6063231455492006128
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -237,3 +233,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1403620958757947850
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6063231455492006092}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f8228306c83b14a43b57de19d0f234a7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
