@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     public bool gameOver = false;
     public int score = 0;
 
+    private AudioSource gameSceneAudio;
+    [SerializeField] AudioClip[] backgroundMusic;
+    private int backgroundMusicLength;
+
     private GameSceneUIHandler gameSceneUIHandler;
     #endregion
 
@@ -18,6 +22,8 @@ public class GameManager : MonoBehaviour
         gameSceneUIHandler = GameObject.Find("Canvas").GetComponent<GameSceneUIHandler>();
         gameSceneUIHandler.UpdateScoreUI();
         gameSceneUIHandler.UpdateLivesUI();
+        backgroundMusicLength = backgroundMusic.Length;
+        PlayNewSong();
     }
 
     // Update is called once per frame
@@ -46,5 +52,11 @@ public class GameManager : MonoBehaviour
     {
         score += modifier;
         gameSceneUIHandler.UpdateScoreUI();
+    }
+
+    void PlayNewSong()
+    {
+        int backgroundMusicIndex = Random.Range(0, backgroundMusicLength);
+        gameSceneAudio.PlayOneShot(backgroundMusic[backgroundMusicIndex]);
     }
 }
