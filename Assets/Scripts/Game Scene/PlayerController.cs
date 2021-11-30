@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip[] punchSounds;
     private int punchSoundsLength;
     private Animator playerAnimator;
+    private SpriteRenderer playerSprite;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         playerAnimator = GetComponent<Animator>();
+        playerSprite = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<AudioSource>();
         jumpSoundsLength = jumpSounds.Length;
@@ -42,13 +44,15 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
+            playerSprite.flipX = true;
             transform.Translate(new Vector2(-1.0f, 0f) * speed * Time.deltaTime);
-            hitbox.transform.localPosition = new Vector2(-1.0f, 0);
+            hitbox.transform.localPosition = new Vector2(-3.0f, 0);
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
+            playerSprite.flipX = false;
             transform.Translate(new Vector2(1.0f, 0f) * speed * Time.deltaTime);
-            hitbox.transform.localPosition = new Vector2(1.0f, 0);
+            hitbox.transform.localPosition = new Vector2(3.0f, 0);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {

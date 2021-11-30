@@ -19,17 +19,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameSceneAudio = GetComponent<AudioSource>();
         gameSceneUIHandler = GameObject.Find("Canvas").GetComponent<GameSceneUIHandler>();
         gameSceneUIHandler.UpdateScoreUI();
         gameSceneUIHandler.UpdateLivesUI();
         backgroundMusicLength = backgroundMusic.Length;
-        PlayNewSong();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!gameSceneAudio.isPlaying)//If no song is playing, play another song.
+        {
+            PlayNewSong();
+        }
     }
 
     void GameOver()
