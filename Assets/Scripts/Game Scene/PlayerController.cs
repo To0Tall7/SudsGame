@@ -17,20 +17,37 @@ public class PlayerController : MonoBehaviour
     private int jumpSoundsLength;
     [SerializeField] AudioClip[] punchSounds;
     private int punchSoundsLength;
-    private Animator playerAnimator;
+    Animator PlayerAnimator;
     // private bool IsRunning, IsJumping, IsPunching, IsHurt, IsDead, IsLanding = false;
+    private bool isRunning, isPunching = false;
+    private SpriteRenderer PlayerSprite;
+
+    public float width = 1;
+    public float height = 1;
+    public Vector3 position = new Vector3(10, 5, 0);
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        playerAnimator = GetComponent<Animator>();
+        PlayerAnimator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<AudioSource>();
         jumpSoundsLength = jumpSounds.Length;
         punchSoundsLength = punchSounds.Length;
         hitbox = transform.GetChild(0).gameObject;//Get the hitbox.
         hitbox.SetActive(false);//Immediately turn it off.
+        PlayerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        PlayerSprite = GetComponent<SpriteRenderer>();
+    }
+
+    void Awake()
+    {
+        // set the scaling
+        Vector3 scale = new Vector3(width, height, 1f);
+        transform.localScale = scale;
+        // set the position
+        transform.position = position;
     }
 
     // Update is called once per frame
@@ -43,31 +60,31 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            // playerAnimator.SetBool("isRunning", true);
+            PlayerSprite.flipX = true;
+            PlayerAnimator.SetTrigger("isRunning");
             transform.Translate(new Vector2(-1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(-1.0f, 0);
-            // playerAnimator.SetBool("isRunning", false);
+            
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            playerAnimator.SetBool("isRunning", true);
+            PlayerSprite.flipX = false;
+            PlayerAnimator.SetTrigger("isRunning");
             transform.Translate(new Vector2(1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(1.0f, 0);
-            playerAnimator.SetBool("isRunning", false);
+            
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
-            playerAnimator.SetBool("isJumping", true);
+          //  PlayerAnimator.SetBool("isJumping", true);
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
             PlayJumpSound();
-            playerAnimator.SetBool("isJumping", false);
+           // PlayerAnimator.SetBool("isJumping", false);
         }
         if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
         {
-            playerAnimator.SetBool("isPunching", true);
             lastPunchTime = Time.time;
             StartCoroutine(PunchingCoroutine());
-            playerAnimator.SetBool("isPunching", false);
         }
     }
 
@@ -75,7 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") || (collision.gameObject.CompareTag("Platform") && playerRb.velocity.y == 0))//If player touches the ground, or touches the platform AND IS NOT PASSING THROUGH THE PLATFORM...
         {
-            playerAnimator.SetBool("IsLanding", true);
+          //  PlayerAnimator.SetBool("IsLanding", true);
             isOnGround = true;
         }
     }
@@ -90,10 +107,13 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PunchingCoroutine()
     {
+        PlayerAnimator.Play("Punch");
+        //PlayerAnimator.SetTrigger("isPunching");
         PlayPunchSound();
         hitbox.SetActive(true);
         yield return new WaitForSeconds(0.025f);
         hitbox.SetActive(false);
+
     }
 
     private void PlayJumpSound()

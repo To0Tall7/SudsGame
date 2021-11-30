@@ -8,10 +8,10 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private float speed = 2.0f;
     private AudioSource enemyAudio;
-    private Animator virusAnimator;
-    private Animator playerAnimator;
+    private Animator VirusAnimator;
+    private Animator PlayerAnimator;
     // private bool VirusIsRunning, VirusIsJumping, VirusIsKicking, VirusIsDead, VirusIsLanding, VirusIsSpawning = false;
-
+    private bool VirusIsRunning, VirusIsKicking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +19,8 @@ public class Enemy : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.FindGameObjectWithTag("Player");
         enemyAudio = GetComponent<AudioSource>();
-        playerAnimator = GetComponent<Animator>();
-        virusAnimator = GetComponent<Animator>();
+        PlayerAnimator = GetComponent<Animator>();
+        VirusAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        // virusAnimator.SetBool("VirusIsDead", true);
+        // VirusAnimator.SetBool("VirusIsDead", true);
         gameManager.UpdateScore(69);//Nice
         //Play death animation stuff here.
         Destroy(gameObject);//Enemy dies.
@@ -45,19 +45,20 @@ public class Enemy : MonoBehaviour
     {
         if (player.transform.position.x != transform.position.x)
         {
-            virusAnimator.SetBool("VirusIsRunning", true);
+            VirusAnimator.SetBool("VirusIsRunning", true);
             float xDirection = player.transform.position.x - transform.position.x;
             Vector2 direction = new Vector2(xDirection / Mathf.Abs(xDirection), 0f);//Either (-1,0) or (1,0).
             transform.Translate(direction * speed * Time.deltaTime);
-            virusAnimator.SetBool("VirusIsRunning", false);
+            VirusAnimator.SetBool("VirusIsRunning", false);
         }
     }
 
     void DamagePlayer()
     {
-        // playerAnimator.SetBool("isHurt", true);
+        // PlayerAnimator.SetBool("isHurt", true);
         gameManager.UpdateLives(-1);
-        // playerAnimator.SetBool("isHurt", false);
+        // PlayerAnimator.SetBool("isHurt", false);
+
     }
 
     #region Collisions
@@ -66,9 +67,9 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Hitbox"))//If the enemy gets punched...
         {
-            // virusAnimator.SetBool("VirusIsDead", true);
+            // VirusAnimator.SetBool("VirusIsDead", true);
             Die();
-            // virusAnimator.SetBool("VirusIsRunning", false);
+            // VirusAnimator.SetBool("VirusIsRunning", false);
         }
     }
 
@@ -76,7 +77,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))//If the enemy collides with the player...
         {
-            virusAnimator.SetBool("VirusIsKicking", true);
+            VirusAnimator.SetBool("VirusIsKicking", true);
             if (transform.position.x >= collision.transform.position.x)//...and the enemy is to the right of the player...
             {
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10.0f, 0f), ForceMode2D.Impulse);//Send the player left.
@@ -87,7 +88,7 @@ public class Enemy : MonoBehaviour
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(10.0f, 0f), ForceMode2D.Impulse);//Send the player right.
                 DamagePlayer();
             }
-            virusAnimator.SetBool("VirusIsKicking", false);
+            VirusAnimator.SetBool("VirusIsKicking", false);
         }
     }
 

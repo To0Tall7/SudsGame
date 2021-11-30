@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour
     float spawnRangeX = 23.0f;
     int enemyCount;
     int waveNumber = 0;
-    private Animator virusAnimator;
+    private Animator VirusAnimator;
     // private bool VirusIsRunning, VirusIsJumping, VirusIsKicking, VirusIsDead, VirusIsLanding, VirusIsSpawning = false;
     // private bool IsRunning, IsJumping, IsPunching, IsHurt, IsDead, IsLanding = false;
 
@@ -19,7 +19,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        virusAnimator = GetComponent<Animator>();
+        VirusAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -37,10 +37,10 @@ public class SpawnManager : MonoBehaviour
     {
         for (int i = 1; i <= amount; i++)
         {
-            // virusAnimator.SetBool("isSpawning", true);
+            // VirusAnimator.SetBool("isSpawning", true);
             Vector2 spawnPosition = new Vector2(Random.Range(-spawnRangeX, spawnRangeX), -1.0f);
             Instantiate(genericEnemyPrefab, spawnPosition, genericEnemyPrefab.transform.rotation);
-            // virusAnimator.SetBool("isSpawning", false);
+            // VirusAnimator.SetBool("isSpawning", false);
         }
     }
 }
