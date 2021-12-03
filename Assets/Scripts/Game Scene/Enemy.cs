@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     private GameObject player;
     private float speed = 2.0f;
     private AudioSource enemyAudio;
+    private SpriteRenderer enemySprite;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,7 @@ public class Enemy : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         player = GameObject.FindGameObjectWithTag("Player");
         enemyAudio = GetComponent<AudioSource>();
+        enemySprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -40,6 +42,14 @@ public class Enemy : MonoBehaviour
         {
             float xDirection = player.transform.position.x - transform.position.x;
             Vector2 direction = new Vector2(xDirection / Mathf.Abs(xDirection), 0f);//Either (-1,0) or (1,0).
+            if (direction.x > 0)
+            {
+                enemySprite.flipX = true;
+            }
+            else
+            {
+                enemySprite.flipX = false;
+            }
             transform.Translate(direction * speed * Time.deltaTime);
         }
     }
