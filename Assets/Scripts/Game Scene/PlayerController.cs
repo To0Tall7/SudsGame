@@ -76,10 +76,10 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
-          //  PlayerAnimator.SetBool("isJumping", true);
+            PlayerAnimator.Play("PlayerJump");
+            PlayerAnimator.SetTrigger("isIdle");
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
             PlayJumpSound();
-           // PlayerAnimator.SetBool("isJumping", false);
         }
         if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
         {
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator PunchingCoroutine()
     {
         PlayerAnimator.Play("Punch");
-        //PlayerAnimator.SetTrigger("isPunching");
+        PlayerAnimator.SetTrigger("isIdle");
         PlayPunchSound();
         hitbox.SetActive(true);
         yield return new WaitForSeconds(0.025f);

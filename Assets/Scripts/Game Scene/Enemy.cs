@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     private AudioSource enemyAudio;
     private Animator VirusAnimator;
     private Animator PlayerAnimator;
+    private SpriteRenderer PlayerSprite;
+
     // private bool VirusIsRunning, VirusIsJumping, VirusIsKicking, VirusIsDead, VirusIsLanding, VirusIsSpawning = false;
     private bool VirusIsRunning, VirusIsKicking = false;
 
@@ -21,6 +23,8 @@ public class Enemy : MonoBehaviour
         enemyAudio = GetComponent<AudioSource>();
         PlayerAnimator = GetComponent<Animator>();
         VirusAnimator = GetComponent<Animator>();
+        PlayerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        PlayerSprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -55,10 +59,8 @@ public class Enemy : MonoBehaviour
 
     void DamagePlayer()
     {
-        // PlayerAnimator.SetBool("isHurt", true);
+        PlayerAnimator.SetTrigger("isHurt");
         gameManager.UpdateLives(-1);
-        // PlayerAnimator.SetBool("isHurt", false);
-
     }
 
     #region Collisions
