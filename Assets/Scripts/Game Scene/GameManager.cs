@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     void PlayNewSong()
     {
-      //  int backgroundMusicIndex = Random.Range(0, backgroundMusicLength);
-      //  gameSceneAudio.PlayOneShot(backgroundMusic[backgroundMusicIndex]);
+        int backgroundMusicIndex = Random.Range(0, backgroundMusicLength);
+        gameSceneAudio.PlayOneShot(backgroundMusic[backgroundMusicIndex]);
     }
 }
