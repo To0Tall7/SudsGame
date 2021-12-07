@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private int punchSoundsLength;
     private Animator playerAnimator;
     private SpriteRenderer playerSprite;
+    private bool jumping = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,8 @@ public class PlayerController : MonoBehaviour
         punchSoundsLength = punchSounds.Length;
         hitbox = transform.GetChild(0).gameObject;//Get the hitbox.
         hitbox.SetActive(false);//Immediately turn it off.
+        playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        playerSprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -45,17 +48,21 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             playerSprite.flipX = true;
+            playerAnimator.SetTrigger("isRunning");
             transform.Translate(new Vector2(-1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(-3.0f, 0);
         }
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             playerSprite.flipX = false;
+            playerAnimator.SetTrigger("isRunning");
             transform.Translate(new Vector2(1.0f, 0f) * speed * Time.deltaTime);
             hitbox.transform.localPosition = new Vector2(3.0f, 0);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
+            playerAnimator.SetBool("jumping", true);
+            //playerAnimator.Play("PlayerJump");
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
             PlayJumpSound();
         }
@@ -64,6 +71,12 @@ public class PlayerController : MonoBehaviour
             lastPunchTime = Time.time;
             StartCoroutine(PunchingCoroutine());
         }
+
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerJump") && !isOnGround)
+        {
+            playerAnimator.SetBool("jumping", false);
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -82,12 +95,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator PunchingCoroutine()
+
+private IEnumerator PunchingCoroutine()
     {
+        playerAnimator.Play("Punch");
         PlayPunchSound();
         hitbox.SetActive(true);
         yield return new WaitForSeconds(0.025f);
         hitbox.SetActive(false);
+        playerAnimator.SetTrigger("isIdle");
     }
 
     private void PlayJumpSound()

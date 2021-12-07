@@ -9,6 +9,10 @@ public class Enemy : MonoBehaviour
     private float speed = 2.0f;
     private AudioSource enemyAudio;
     private SpriteRenderer enemySprite;
+    private Animator playerAnimator;
+    private Animator virusAnimator;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +21,9 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         enemyAudio = GetComponent<AudioSource>();
         enemySprite = GetComponent<SpriteRenderer>();
+        playerAnimator = player.GetComponent<Animator>();
+        virusAnimator = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -31,6 +38,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        virusAnimator.SetTrigger("VirusIsDead");
         gameManager.UpdateScore(69);//Nice
         //Play death animation stuff here.
         Destroy(gameObject);//Enemy dies.
@@ -50,12 +58,15 @@ public class Enemy : MonoBehaviour
             {
                 enemySprite.flipX = false;
             }
+            virusAnimator.SetTrigger("VirusRun");
             transform.Translate(direction * speed * Time.deltaTime);
         }
     }
 
     void DamagePlayer()
     {
+        playerAnimator.SetTrigger("HurtPlayer");
+        playerAnimator.SetTrigger("HurtPlayer");
         gameManager.UpdateLives(-1);
     }
 
@@ -73,6 +84,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))//If the enemy collides with the player...
         {
+            virusAnimator.Play("Virus Kick");
             if (transform.position.x >= collision.transform.position.x)//...and the enemy is to the right of the player...
             {
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10.0f, 0f), ForceMode2D.Impulse);//Send the player left.
@@ -84,6 +96,7 @@ public class Enemy : MonoBehaviour
                 DamagePlayer();
             }
         }
+        virusAnimator.SetTrigger("VirusIdle");
     }
 
     #endregion
