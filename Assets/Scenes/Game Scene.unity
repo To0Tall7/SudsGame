@@ -370,13 +370,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d,
-    type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 2.2, y: 2.08}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -405,6 +404,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ee6f23dea734cb747b8a864dcebf97c6, type: 3}
   - {fileID: 8300000, guid: 7a16b8a71f02a37478cd187ccd34099d, type: 3}
   - {fileID: 8300000, guid: 626d6a1e7a9da2f47947a4155a682d36, type: 3}
+  width: 1
+  height: 1
+  position: {x: 10, y: 5, z: 0}
 --- !u!82 &90688370
 AudioSource:
   m_ObjectHideFlags: 0
@@ -511,7 +513,7 @@ Animator:
   m_GameObject: {fileID: 90688364}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a038e21b0bc9420418e68204861835a9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -533,6 +535,7 @@ GameObject:
   - component: {fileID: 175574604}
   - component: {fileID: 175574603}
   - component: {fileID: 175574607}
+  - component: {fileID: 175574608}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -640,6 +643,25 @@ MonoBehaviour:
   gameOverText: {fileID: 250341246}
   restartButton: {fileID: 1815478911}
   quitButton: {fileID: 52609977}
+--- !u!95 &175574608
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175574602}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2a4db275cde76f14a8d4fcfe102bfabf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &188103398
 GameObject:
   m_ObjectHideFlags: 0
