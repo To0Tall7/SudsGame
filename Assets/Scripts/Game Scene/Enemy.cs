@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     private GameObject centerPlatform;
     private GameObject rightPlatform;
     private Rigidbody2D enemyRb;
-    private float jumpModifier = 0.65f;
+    private float jumpModifier = 5.0f;
     private double platformLength = 13.2135 / 2;
     private bool isOnGround;
     private SpawnManager spawnManager;
@@ -49,14 +49,17 @@ public class Enemy : MonoBehaviour
         }
 
         FollowPlayer();
+    }
 
+    private void FixedUpdate()
+    {
         //If close to a lower platform, and not on top of that platform, and the player is on a platform...
-        if ((Math.Abs(transform.position.x - leftPlatform.transform.position.x) <= platformLength + 1f || Math.Abs(transform.position.x - rightPlatform.transform.position.x) <= platformLength + 1f) && transform.position.y <= 1f && player.transform.position.y >= 1f)
+        if ((Math.Abs(transform.position.x - leftPlatform.transform.position.x) <= platformLength + 1f || Math.Abs(transform.position.x - rightPlatform.transform.position.x) <= platformLength + 1f) && transform.position.y <= 1f && player.transform.position.y >= 1f && Math.Abs(transform.position.x - player.transform.position.x) <= 2*platformLength)
         {
             Jump();
         }
         //If close to the center platform, and not on top of that platform, and on top of one of the lower platforms, and the player is on the higher platform...
-        if (Math.Abs(transform.position.x - centerPlatform.transform.position.x) <= platformLength + 1f && (transform.position.y <= 4f && transform.position.y >= 1f) && player.transform.position.y >= 4f)
+        if (Math.Abs(transform.position.x - centerPlatform.transform.position.x) <= platformLength + 1f && (transform.position.y <= 4f && transform.position.y >= 1f) && player.transform.position.y >= 4f && Math.Abs(transform.position.x - player.transform.position.x) <= 2 * platformLength)
         {
             Jump();
         }
