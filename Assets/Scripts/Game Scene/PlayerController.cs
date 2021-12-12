@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRb;
     private GameObject hitbox;
     private GameManager gameManager;
-    //private bool isPunching = false;
     private float lastPunchTime = 0;//The last time the player punched, in game time.
     private AudioSource playerAudio;
     [SerializeField] AudioClip[] jumpSounds;
@@ -19,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private int punchSoundsLength;
     private Animator playerAnimator;
     private SpriteRenderer playerSprite;
-    private bool jumping = false;
 
     // Start is called before the first frame update
     void Start()
@@ -62,11 +60,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isOnGround)
         {
             playerAnimator.SetBool("jumping", true);
-            //playerAnimator.Play("PlayerJump");
             playerRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);//Add an instantaneous force upward, i.e., a jump.
             PlayJumpSound();
         }
-        if (Input.GetKeyDown(KeyCode.E) && Time.time - lastPunchTime >= 0.25f)//Punch if press E and it has been at least 0.5 seconds since last punch.
+        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q)) && Time.time - lastPunchTime >= 0.25f)//Punch if press E/Q and it has been at least 0.5 seconds since last punch.
         {
             lastPunchTime = Time.time;
             StartCoroutine(PunchingCoroutine());

@@ -103,6 +103,7 @@ public class Enemy : MonoBehaviour
     {
         if (isOnGround)
         {
+            virusAnimator.Play("Virus Jump");
             enemyRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);
         }
     }
