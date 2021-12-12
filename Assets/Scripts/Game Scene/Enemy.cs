@@ -1,28 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     private GameManager gameManager;
     private GameObject player;
-    private float speed = 2.0f;
+    [SerializeField] float speed;
     private AudioSource enemyAudio;
     private SpriteRenderer enemySprite;
     private Animator playerAnimator;
     private Animator virusAnimator;
-
+    private GameObject leftPlatform;
+    private GameObject centerPlatform;
+    private GameObject rightPlatform;
+    private Rigidbody2D enemyRb;
+    private float jumpModifier = 0.65f;
+    private double platformLength = 13.2135 / 2;
+    private bool isOnGround;
+    private SpawnManager spawnManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyRb = GetComponent<Rigidbody2D>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         player = GameObject.FindGameObjectWithTag("Player");
+        rightPlatform = GameObject.Find("Right Platform");
+        centerPlatform = GameObject.Find("Center Platform");
+        leftPlatform = GameObject.Find("Left Platform");
         enemyAudio = GetComponent<AudioSource>();
         enemySprite = GetComponent<SpriteRenderer>();
         playerAnimator = player.GetComponent<Animator>();
         virusAnimator = GetComponent<Animator>();
+        speed = 1.75f + .25f * spawnManager.getWaveNumber();
 
     }
 
@@ -33,7 +47,19 @@ public class Enemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         FollowPlayer();
+
+        //If close to a lower platform, and not on top of that platform, and the player is on a platform...
+        if ((Math.Abs(transform.position.x - leftPlatform.transform.position.x) <= platformLength + 1f || Math.Abs(transform.position.x - rightPlatform.transform.position.x) <= platformLength + 1f) && transform.position.y <= 1f && player.transform.position.y >= 1f)
+        {
+            Jump();
+        }
+        //If close to the center platform, and not on top of that platform, and on top of one of the lower platforms, and the player is on the higher platform...
+        if (Math.Abs(transform.position.x - centerPlatform.transform.position.x) <= platformLength + 1f && (transform.position.y <= 4f && transform.position.y >= 1f) && player.transform.position.y >= 4f)
+        {
+            Jump();
+        }
     }
 
     void Die()
@@ -70,6 +96,14 @@ public class Enemy : MonoBehaviour
         gameManager.UpdateLives(-1);
     }
 
+    void Jump()
+    {
+        if (isOnGround)
+        {
+            enemyRb.AddForce(new Vector2(0f, 1.0f) * jumpModifier, ForceMode2D.Impulse);
+        }
+    }
+
     #region Collisions
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -99,7 +133,23 @@ public class Enemy : MonoBehaviour
         virusAnimator.SetTrigger("VirusIdle");
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || (collision.gameObject.CompareTag("Platform") && enemyRb.velocity.y == 0))//If enemy touches the ground, or touches the platform AND IS NOT PASSING THROUGH THE PLATFORM...
+        {
+            isOnGround = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))//If enemy stops touching the ground/platform...
+        {
+            isOnGround = false;
+        }
+    }
+
     #endregion
 
-    
+
 }

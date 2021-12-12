@@ -69,4 +69,9 @@ public class SpawnManager : MonoBehaviour
         }
         isSpawning = false;
     }
+
+    public int getWaveNumber()
+    {
+        return waveNumber;
+    }
 }
