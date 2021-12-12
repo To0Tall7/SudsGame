@@ -1325,7 +1325,7 @@ MonoBehaviour:
 
     WASD/Arrow - Move
 
-    E/Q - Punch
+    Q/E - Punch
 
     Space - Jump'
   m_isRightToLeft: 0
